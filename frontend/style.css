@@ -88,7 +88,8 @@ footer{color:var(--muted);font-size:12.5px;text-align:center;margin-top:24px}
 /* ===== 簡章內容 ===== */
 .doc h2{margin-bottom:12px!important}
 .doc p{margin:0}
-.kv{display:grid;grid-template-columns:110px 1fr;margin:0;border-top:1px solid var(--line)}
+.kv{display:grid;grid-template-columns:110px 1fr;margin:0}
+.kv > :nth-child(-n+2){padding-top:0}
 .kv dt,.kv dd{padding:10px 0;border-bottom:1px solid var(--line);margin:0}
 .kv dt{font-weight:500;color:var(--primary)}
 .kv > :nth-last-child(-n+2){border-bottom:0;padding-bottom:0}
