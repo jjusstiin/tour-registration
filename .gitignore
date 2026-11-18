@@ -20,3 +20,6 @@ Thumbs.db
 # 原始文件（含聯絡人姓名，不公開）
 *.docx
 ~$*
+
+# 背景原圖（1.9MB）不上傳；網站用壓縮過的 hero.jpg / hero-sm.jpg
+frontend/台北雪梨雙城晨曦之旅.png

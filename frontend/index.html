@@ -7,37 +7,43 @@
 <meta name="description" content="2027年臺澳青年推動惠民啟蘊交流活動｜活動簡章與線上報名">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="hero.jpg" media="(min-width:601px)">
+<link rel="preload" as="image" href="hero-sm.jpg" media="(max-width:600px)">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div id="app" v-cloak>
 
 <header class="hero">
-  <svg viewBox="0 0 400 200" aria-hidden="true"><path fill="#fff" d="M10 190 L10 160 Q40 150 60 120 L80 120 L80 100 Q140 60 200 100 L200 80 L230 80 L230 100 Q300 60 370 110 L390 190 Z"/><circle cx="320" cy="40" r="24" fill="#fff"/></svg>
   <div class="wrap">
-    <div class="topbar"><span class="badge">臺澳青年交流</span></div>
-    <h1>2027年臺澳青年推動<br class="br-sm">惠民啟蘊交流活動</h1>
-    <p class="sub">以交流促進友誼・以參與凝聚青年・以實踐推動惠民啟蘊</p>
+    <div class="topbar">
+      <span class="badge">{{ t('badge') }}</span>
+      <div class="lang" aria-label="Language">
+        <button type="button" :class="{on: lang === 'zh'}" @click="setLang('zh')">中文</button>
+        <button type="button" :class="{on: lang === 'en'}" @click="setLang('en')">English</button>
+      </div>
+    </div>
+    <h1>{{ t('title_1') }}<br>{{ t('title_2') }}</h1>
+    <p class="sub">{{ t('subtitle') }}</p>
     <div class="facts">
-      <span>📅 2027/07/14（三）– 07/22（四）・9 日</span>
-      <span>📍 澳洲 布里斯本・黃金海岸</span>
-      <span>⏰ 報名截止 2026/12/30</span>
+      <span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16.5" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>{{ t('fact_dates') }}</span>
+      <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 10c0 5.2-7.5 11.5-7.5 11.5S4.5 15.2 4.5 10a7.5 7.5 0 0 1 15 0Z"/><circle cx="12" cy="10" r="2.6"/></svg>{{ t('fact_place') }}</span>
+      <span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 6.5V12l3.5 2"/></svg>{{ t('fact_deadline') }}</span>
     </div>
   </div>
 </header>
 
-<nav class="tabbar" aria-label="頁面切換">
+<nav class="tabbar" aria-label="頁面切換 / Pages">
   <div class="wrap tabs">
-    <button type="button" :class="{on: tab === 'brochure'}" @click="go('brochure')">活動簡章</button>
-    <button type="button" :class="{on: tab === 'register'}" @click="go('register')">線上報名</button>
+    <button type="button" :class="{on: tab === 'brochure'}" @click="go('brochure')">{{ t('tab_brochure') }}</button>
+    <button type="button" :class="{on: tab === 'register'}" @click="go('register')">{{ t('tab_register') }}</button>
   </div>
 </nav>
 
 <main class="wrap">
 
-<!-- ====================== 活動簡章 ====================== -->
-<div v-show="tab === 'brochure'">
-
+<!-- ====================== 活動簡章（中文） ====================== -->
+<div v-show="tab === 'brochure' && lang === 'zh'">
   <section class="card doc">
     <h2><span class="n">一</span>活動宗旨</h2>
     <p>緣起於「丙午年青年策劃人員藏脩息遊班」，以「以交流促進友誼、以參與凝聚青年、以實踐推動惠民啟蘊」為理念，結合運動聯誼、文化美食市集及交流參訪，促進臺澳青年相互認識、橫向學習與共同實踐。</p>
@@ -47,9 +53,9 @@
     <h2><span class="n">二</span>活動資訊</h2>
     <dl class="kv">
       <dt>活動期間</dt><dd>2027年07月14日（三）至22日（四），共9日（含往返及息遊）</dd>
-      <dt>主要活動</dt><dd>
-        <span class="hl">07月17日（六）</span>臺澳青年運動賽事聯誼<br>
-        <span class="hl">07月18日（日）</span>文化與美食小型市集</dd>
+      <dt>主要活動</dt><dd class="events">
+        <div><span class="hl">07月17日（六）</span>臺澳青年運動賽事聯誼</div>
+        <div><span class="hl">07月18日（日）</span>文化與美食小型市集</div></dd>
       <dt>活動地點</dt><dd>澳洲昆士蘭州布里斯本中心、黃金海岸區域；市集實際場地待確認。</dd>
       <dt>參與對象</dt><dd>第一階段以 18 至 30 歲之大專學生及社會青年為主，招募範圍為臺灣臺中區與澳洲各州青年。</dd>
       <dt>招募規模</dt><dd>總人數暫定上限 150 人（含隨行人員），依場地及接待條件調整。</dd>
@@ -113,149 +119,230 @@
       <li>活動如有調整事項，由籌備團隊於活動前告知並通知參與者。</li>
     </ul>
   </section>
+</div>
 
-  <section class="card cta">
-    <h2>準備好了嗎？</h2>
-    <p class="hint">報名完成不代表正式錄取，錄取結果及後續活動資訊將另行通知。</p>
-    <button type="button" class="btn primary" @click="go('register')">{{ saved ? '查看 / 修改我的報名' : '立即線上報名 →' }}</button>
+<!-- ====================== 活動簡章（English） ====================== -->
+<div v-show="tab === 'brochure' && lang === 'en'">
+  <section class="card doc">
+    <h2><span class="n">1</span>Purpose</h2>
+    <p>This program grows out of the Bingwu-year (2026) Youth Planners “Cangxiu Xiyou” Class. Guided by the ideals of <i>building friendship through exchange, uniting youth through participation, and promoting community benefit and inspiration through action</i>, it combines a sports day, a cultural &amp; food market and exchange visits, so that young people from Taiwan and Australia can get to know each other, learn from one another and work together.</p>
+  </section>
+
+  <section class="card doc">
+    <h2><span class="n">2</span>Event details</h2>
+    <dl class="kv">
+      <dt>Dates</dt><dd>Wed 14 – Thu 22 July 2027, 9 days (including travel and leisure days)</dd>
+      <dt>Main events</dt><dd class="events">
+        <div><span class="hl">Sat 17 July</span>Taiwan–Australia youth sports day</div>
+        <div><span class="hl">Sun 18 July</span>Small cultural &amp; food market</div></dd>
+      <dt>Venue</dt><dd>Brisbane CBD and the Gold Coast, Queensland, Australia. Market venue to be confirmed.</dd>
+      <dt>Who can join</dt><dd>Phase one focuses on university students and young adults aged 18–30, from Taichung (Taiwan) and all Australian states.</dd>
+      <dt>Capacity</dt><dd>Up to 150 people (including accompanying staff), subject to venue and hosting capacity.</dd>
+      <dt>Organisers</dt><dd>Host: Brisbane, Queensland<br>Co-hosts: South Australia, Western Australia, Northern Territory and other regions</dd>
+    </dl>
+  </section>
+
+  <section class="card doc">
+    <h2><span class="n">3</span>Program</h2>
+    <ol class="timeline">
+      <li><b>Wed 14 Jul</b><span>Depart Taiwan (subject to flights)</span></li>
+      <li><b>Thu 15 Jul</b><span>Arrive in Brisbane, settle in and get to know each other</span></li>
+      <li><b>Fri 16 Jul</b><span>Preparation, team allocation, site visits and run-through</span></li>
+      <li class="key"><b>Sat 17 Jul</b><span>Sports day &amp; Gold Coast beach volleyball</span></li>
+      <li class="key"><b>Sun 18 Jul</b><span>Cultural &amp; food market: cultural sharing, food tasting and youth service</span></li>
+      <li><b>Mon 19 – Wed 21 Jul</b><span>Leisure, visits, exchange and preparing to return</span></li>
+      <li><b>Thu 22 Jul</b><span>Return to Taiwan (subject to actual flights)</span></li>
+    </ol>
+    <p class="hint" style="margin-top:14px">Notes:</p>
+    <ul class="bul">
+      <li>The sports day is about friendship first, competition second. Activities under consideration include balloon volleyball, dodge frisbee, T-ball, kickball, table tennis and fun games; the final list will be announced.</li>
+      <li>Market stalls and cultural / food experiences will be planned jointly by Taiwanese and Australian youth.</li>
+    </ul>
+  </section>
+
+  <section class="card doc">
+    <h2><span class="n">4</span>How to take part</h2>
+    <p>Join the sports day, the cultural &amp; food market and related preparation work according to your interests. Taiwanese and Australian youth are encouraged to plan, share tasks and deliver the program together. Task allocation, team arrangements and pre-departure training will be announced by the organising team.</p>
+  </section>
+
+  <section class="card doc">
+    <h2><span class="n">5</span>Costs, transport &amp; accommodation</h2>
+    <p>This program is self-organised. Funding and cost-sharing will be agreed between participants and each region's organising team; final amounts depend on quotes and approval. Accommodation will mainly be in Brisbane CBD, subject to hosting arrangements.</p>
+  </section>
+
+  <section class="card doc">
+    <h2><span class="n">6</span>Registration</h2>
+    <dl class="kv">
+      <dt>Deadline</dt><dd>Open now until <b>30 December 2026</b></dd>
+      <dt>How to register</dt><dd>
+        <b>Online:</b> click “Register” above and submit the form.<br>
+        <b>Paper:</b> hand the completed form to your regional contact.</dd>
+      <dt>Selection</dt><dd>Based on numbers and hosting capacity. Selection criteria and notification dates will be announced.</dd>
+      <dt>Contacts</dt><dd>
+        <ul class="contacts">
+          <li><span>Brisbane</span>何琬宜</li>
+          <li><span>Western Aus.</span>黃安敏、陳政廷</li>
+          <li><span>Central Aus.</span>蔡采芹</li>
+          <li><span>South Aus.</span>洪鈺舜</li>
+          <li><span>Taichung</span>吳凱翔、林與諶</li>
+        </ul></dd>
+    </dl>
+  </section>
+
+  <section class="card doc">
+    <h2><span class="n">7</span>Important notes</h2>
+    <ul class="bul">
+      <li>Check your passport validity, Australian visa and entry requirements. Required documents will be confirmed in the official pre-departure notice.</li>
+      <li>Please provide emergency contact, dietary and assistance details. This information is used only for event communication, safety arrangements and emergencies, and is kept securely.</li>
+      <li>The program may change depending on weather, venue and safety. Final content and schedule will be announced before departure.</li>
+      <li>Any changes will be communicated to participants by the organising team in advance.</li>
+    </ul>
   </section>
 </div>
 
+<!-- 簡章底部：報名按鈕（中英共用） -->
+<section class="card cta" v-show="tab === 'brochure'">
+  <h2>{{ t('cta_title') }}</h2>
+  <p class="hint">{{ t('cta_hint') }}</p>
+  <button type="button" class="btn primary" @click="go('register')">{{ saved ? t('cta_btn_edit') : t('cta_btn') }}</button>
+</section>
+
 <!-- ====================== 線上報名 ====================== -->
 <div v-show="tab === 'register'">
-  <div class="notice" v-if="server === 'waking'">⏳ 報名系統喚醒中，約需 30–60 秒，您可以先開始填寫。</div>
-  <div class="notice off" v-if="server === 'down'">目前無法連線到報名系統。您仍可填寫，稍後再按送出；若一直無法送出請聯絡各地區窗口。</div>
-  <div class="notice" v-if="loadedPrev && !done">已載入您先前送出的資料，修改後按「更新報名資料」即可。</div>
+  <div class="notice" v-if="server === 'waking'">{{ t('s_waking') }}</div>
+  <div class="notice off" v-if="server === 'down'">{{ t('s_down') }}</div>
+  <div class="notice" v-if="loadedPrev && !done">{{ t('loaded') }}</div>
 
   <section class="card" v-if="done">
     <div class="done">
       <div class="tick">✓</div>
-      <h2 style="margin:0 0 6px">報名成功！</h2>
-      <p class="hint">我們已收到您的資料。報名完成不代表正式錄取，錄取結果及後續活動資訊將另行通知。<br>之後用這台裝置的同一個瀏覽器打開本頁，就能查看或修改。</p>
-      <p class="refno" v-if="saved">報名編號：<b>{{ saved.id }}</b></p>
-      <button type="button" class="btn ghost" @click="done = false">查看 / 修改我的報名</button>
+      <h2 style="margin:0 0 6px">{{ t('done_title') }}</h2>
+      <p class="hint">{{ t('done_body') }}</p>
+      <p class="refno" v-if="saved">{{ t('ref_no') }}<b>{{ saved.id }}</b></p>
+      <button type="button" class="btn ghost" @click="done = false">{{ t('cta_btn_edit') }}</button>
     </div>
   </section>
 
   <form v-show="!done" @submit.prevent="submit" novalidate>
     <!-- 一、基本資料 -->
     <section class="card">
-      <h2><span class="n">1</span>基本資料</h2>
-      <p class="hint">英文姓名請依護照拼音填寫。</p>
+      <h2><span class="n">1</span>{{ t('s1') }}</h2>
+      <p class="hint">{{ t('s1_hint') }}</p>
       <div class="grid">
-        <div class="f" :class="bad('nameZh')"><label class="l" for="nameZh">中文姓名 <span class="req">*</span></label>
+        <div class="f" :class="bad('nameZh')"><label class="l" for="nameZh">{{ t('nameZh') }} <span class="req">*</span></label>
           <input type="text" id="nameZh" v-model="form.nameZh" autocomplete="name" maxlength="50"><div class="msg">{{ errs.nameZh }}</div></div>
-        <div class="f" :class="bad('nameEn')"><label class="l" for="nameEn">英文姓名（護照拼音） <span class="req">*</span></label>
+        <div class="f" :class="bad('nameEn')"><label class="l" for="nameEn">{{ t('nameEn') }} <span class="req">*</span></label>
           <input type="text" id="nameEn" class="upper" v-model="form.nameEn" placeholder="CHEN TAI MING" maxlength="100"><div class="msg">{{ errs.nameEn }}</div></div>
-        <div class="f" :class="bad('gender')"><label class="l">性別 <span class="req">*</span></label>
-          <div class="chips"><label v-for="o in OPTS.gender" :key="o[0]"><input type="radio" name="gender" :value="o[0]" v-model="form.gender"><span>{{ o[1] }}</span></label></div>
+        <div class="f" :class="bad('gender')"><span class="l">{{ t('gender') }} <span class="req">*</span></span>
+          <div class="chips"><label v-for="o in OPTS.gender" :key="o[0]"><input type="radio" name="gender" :value="o[0]" v-model="form.gender"><span>{{ o[1][lang] }}</span></label></div>
           <div class="msg">{{ errs.gender }}</div></div>
-        <div class="f" :class="bad('dob')"><label class="l" for="dob">出生年月日 <span class="req">*</span></label>
+        <div class="f" :class="bad('dob')"><label class="l" for="dob">{{ t('dob') }} <span class="req">*</span></label>
           <input type="date" id="dob" v-model="form.dob" max="2015-12-31"><div class="msg">{{ errs.dob }}</div></div>
-        <div class="f" :class="bad('phone')"><label class="l" for="phone">電話 <span class="req">*</span></label>
+        <div class="f" :class="bad('phone')"><label class="l" for="phone">{{ t('phone') }} <span class="req">*</span></label>
           <input type="tel" id="phone" v-model="form.phone" autocomplete="tel" maxlength="30"><div class="msg">{{ errs.phone }}</div></div>
-        <div class="f" :class="bad('email')"><label class="l" for="email">E-mail <span class="req">*</span></label>
+        <div class="f" :class="bad('email')"><label class="l" for="email">{{ t('email') }} <span class="req">*</span></label>
           <input type="email" id="email" v-model="form.email" autocomplete="email" maxlength="120"><div class="msg">{{ errs.email }}</div></div>
-        <div class="f full"><label class="l" for="lineId">LINE ID／其他聯絡方式</label>
+        <div class="f full"><label class="l" for="lineId">{{ t('lineId') }}</label>
           <input type="text" id="lineId" v-model="form.lineId" maxlength="60"></div>
-        <div class="f full" :class="bad('region')"><label class="l">所屬地區 <span class="req">*</span></label>
-          <div class="chips"><label v-for="o in OPTS.region" :key="o[0]"><input type="radio" name="region" :value="o[0]" v-model="form.region"><span>{{ o[1] }}</span></label></div>
-          <input type="text" class="other-in" v-if="form.region === 'other'" v-model="form.regionOther" placeholder="請填寫地區" maxlength="50">
+        <div class="f full" :class="bad('region')"><span class="l">{{ t('region') }} <span class="req">*</span></span>
+          <div class="chips"><label v-for="o in OPTS.region" :key="o[0]"><input type="radio" name="region" :value="o[0]" v-model="form.region"><span>{{ o[1][lang] }}</span></label></div>
+          <input type="text" class="other-in" v-if="form.region === 'other'" v-model="form.regionOther" :placeholder="t('region_ph')" :aria-label="t('region_ph')" maxlength="50">
           <div class="msg">{{ errs.region }}</div></div>
-        <div class="f full"><label class="l" for="mentor">關心人／壇主</label>
+        <div class="f full"><label class="l" for="mentor">{{ t('mentor') }}</label>
           <input type="text" id="mentor" v-model="form.mentor" maxlength="50"></div>
-        <div class="f full" :class="bad('role')"><label class="l">參與身分 <span class="req">*</span></label>
-          <div class="chips"><label v-for="o in OPTS.role" :key="o[0]"><input type="radio" name="role" :value="o[0]" v-model="form.role"><span>{{ o[1] }}</span></label></div>
-          <input type="text" class="other-in" v-if="form.role === 'other'" v-model="form.roleOther" placeholder="請填寫身分" maxlength="50">
+        <div class="f full" :class="bad('role')"><span class="l">{{ t('role') }} <span class="req">*</span></span>
+          <div class="chips"><label v-for="o in OPTS.role" :key="o[0]"><input type="radio" name="role" :value="o[0]" v-model="form.role"><span>{{ o[1][lang] }}</span></label></div>
+          <input type="text" class="other-in" v-if="form.role === 'other'" v-model="form.roleOther" :placeholder="t('role_ph')" :aria-label="t('role_ph')" maxlength="50">
           <div class="msg">{{ errs.role }}</div></div>
       </div>
     </section>
 
     <!-- 二、參與方式與活動意願 -->
     <section class="card">
-      <h2><span class="n">2</span>參與方式與活動意願</h2>
-      <div class="f" :class="bad('attendance')"><label class="l">參與日期 <span class="req">*</span></label>
-        <div class="chips"><label v-for="o in OPTS.attendance" :key="o[0]"><input type="radio" name="attendance" :value="o[0]" v-model="form.attendance"><span>{{ o[1] }}</span></label></div>
+      <h2><span class="n">2</span>{{ t('s2') }}</h2>
+      <div class="f" :class="bad('attendance')"><span class="l">{{ t('attendance') }} <span class="req">*</span></span>
+        <div class="chips"><label v-for="o in OPTS.attendance" :key="o[0]"><input type="radio" name="attendance" :value="o[0]" v-model="form.attendance"><span>{{ o[1][lang] }}</span></label></div>
         <div class="range" v-if="form.attendance === 'partial'">
-          07 月 <select v-model="form.partialFrom" aria-label="開始日"><option value="">--</option><option v-for="d in DAYS" :key="d" :value="d">{{ d }}</option></select> 日
-          至 07 月 <select v-model="form.partialTo" aria-label="結束日"><option value="">--</option><option v-for="d in DAYS" :key="d" :value="d">{{ d }}</option></select> 日
+          {{ t('p_from') }} <select v-model="form.partialFrom" :aria-label="t('p_from_aria')"><option value="">--</option><option v-for="d in DAYS" :key="d" :value="d">{{ d }}</option></select>
+          {{ t('p_mid') }} <select v-model="form.partialTo" :aria-label="t('p_to_aria')"><option value="">--</option><option v-for="d in DAYS" :key="d" :value="d">{{ d }}</option></select> {{ t('p_end') }}
         </div>
         <div class="msg">{{ errs.attendance }}</div></div>
 
-      <div class="f" :class="bad('sports')"><label class="l">07/17 運動聯誼（可複選） <span class="req">*</span></label>
-        <div class="chips"><label v-for="o in OPTS.sports" :key="o[0]"><input type="checkbox" :value="o[0]" v-model="form.sports"><span>{{ o[1] }}</span></label></div>
+      <div class="f" :class="bad('sports')"><span class="l">{{ t('sports') }}{{ t('multi') }} <span class="req">*</span></span>
+        <div class="chips"><label v-for="o in OPTS.sports" :key="o[0]"><input type="checkbox" :value="o[0]" v-model="form.sports"><span>{{ o[1][lang] }}</span></label></div>
         <div class="msg">{{ errs.sports }}</div></div>
 
-      <div class="f" :class="bad('market')"><label class="l">07/18 文化美食市集（可複選） <span class="req">*</span></label>
-        <div class="chips"><label v-for="o in OPTS.market" :key="o[0]"><input type="checkbox" :value="o[0]" v-model="form.market"><span>{{ o[1] }}</span></label></div>
+      <div class="f" :class="bad('market')"><span class="l">{{ t('market') }}{{ t('multi') }} <span class="req">*</span></span>
+        <div class="chips"><label v-for="o in OPTS.market" :key="o[0]"><input type="checkbox" :value="o[0]" v-model="form.market"><span>{{ o[1][lang] }}</span></label></div>
         <div class="sub-q" v-if="form.market.includes('help')">
-          <label class="l">可協助：</label>
-          <div class="chips"><label v-for="o in OPTS.marketHelp" :key="o[0]"><input type="checkbox" :value="o[0]" v-model="form.marketHelp"><span>{{ o[1] }}</span></label></div>
-          <input type="text" class="other-in" v-if="form.marketHelp.includes('other')" v-model="form.marketHelpOther" placeholder="請填寫可協助的項目" maxlength="50">
+          <span class="l">{{ t('can_help') }}</span>
+          <div class="chips"><label v-for="o in OPTS.marketHelp" :key="o[0]"><input type="checkbox" :value="o[0]" v-model="form.marketHelp"><span>{{ o[1][lang] }}</span></label></div>
+          <input type="text" class="other-in" v-if="form.marketHelp.includes('other')" v-model="form.marketHelpOther" :placeholder="t('market_ph')" :aria-label="t('market_ph')" maxlength="50">
         </div>
         <div class="msg">{{ errs.market }}</div></div>
 
-      <div class="f"><label class="l">其他協助意願（可複選）</label>
-        <div class="chips"><label v-for="o in OPTS.otherHelp" :key="o[0]"><input type="checkbox" :value="o[0]" v-model="form.otherHelp"><span>{{ o[1] }}</span></label></div>
-        <input type="text" class="other-in" v-if="form.otherHelp.includes('other')" v-model="form.otherHelpOther" placeholder="請填寫其他協助意願" maxlength="50"></div>
+      <div class="f"><span class="l">{{ t('otherHelp') }}{{ t('multi') }}</span>
+        <div class="chips"><label v-for="o in OPTS.otherHelp" :key="o[0]"><input type="checkbox" :value="o[0]" v-model="form.otherHelp"><span>{{ o[1][lang] }}</span></label></div>
+        <input type="text" class="other-in" v-if="form.otherHelp.includes('other')" v-model="form.otherHelpOther" :placeholder="t('otherHelp_ph')" :aria-label="t('otherHelp_ph')" maxlength="50"></div>
     </section>
 
     <!-- 三、其他與聯絡資訊 -->
     <section class="card">
-      <h2><span class="n">3</span>其他與聯絡資訊</h2>
+      <h2><span class="n">3</span>{{ t('s3') }}</h2>
       <div class="grid">
-        <div class="f full" :class="bad('lodging')"><label class="l">住宿安排 <span class="req">*</span></label>
-          <div class="chips"><label v-for="o in OPTS.lodging" :key="o[0]"><input type="radio" name="lodging" :value="o[0]" v-model="form.lodging"><span>{{ o[1] }}</span></label></div>
+        <div class="f full" :class="bad('lodging')"><span class="l">{{ t('lodging') }} <span class="req">*</span></span>
+          <div class="chips"><label v-for="o in OPTS.lodging" :key="o[0]"><input type="radio" name="lodging" :value="o[0]" v-model="form.lodging"><span>{{ o[1][lang] }}</span></label></div>
           <div class="msg">{{ errs.lodging }}</div></div>
 
-        <div class="f full sub-h">接機需求 <span class="hint">（不需要可留空）</span></div>
-        <div class="f"><label class="l" for="arrivalDate">抵達布里斯本日期</label>
+        <div class="f full sub-h">{{ t('pickup') }} <span class="hint">{{ t('optional') }}</span></div>
+        <div class="f"><label class="l" for="arrivalDate">{{ t('arrivalDate') }}</label>
           <input type="date" id="arrivalDate" v-model="form.arrivalDate" min="2027-07-01" max="2027-07-31"></div>
-        <div class="f"><label class="l" for="arrivalFlight">班機抵達時間／號碼</label>
-          <input type="text" id="arrivalFlight" v-model="form.arrivalFlight" placeholder="例：06:30 BR315" maxlength="60"></div>
+        <div class="f"><label class="l" for="arrivalFlight">{{ t('arrivalFlight') }}</label>
+          <input type="text" id="arrivalFlight" v-model="form.arrivalFlight" :placeholder="t('arrival_ph')" maxlength="60"></div>
 
-        <div class="f full sub-h">送機需求 <span class="hint">（不需要可留空）</span></div>
-        <div class="f"><label class="l" for="departureDate">離開布里斯本日期</label>
+        <div class="f full sub-h">{{ t('dropoff') }} <span class="hint">{{ t('optional') }}</span></div>
+        <div class="f"><label class="l" for="departureDate">{{ t('departureDate') }}</label>
           <input type="date" id="departureDate" v-model="form.departureDate" min="2027-07-01" max="2027-07-31"></div>
-        <div class="f"><label class="l" for="departureFlight">班機起飛時間／號碼</label>
-          <input type="text" id="departureFlight" v-model="form.departureFlight" placeholder="例：23:55 BR316" maxlength="60"></div>
+        <div class="f"><label class="l" for="departureFlight">{{ t('departureFlight') }}</label>
+          <input type="text" id="departureFlight" v-model="form.departureFlight" :placeholder="t('departure_ph')" maxlength="60"></div>
 
-        <div class="f full sub-h">緊急聯絡人</div>
-        <div class="f" :class="bad('emName')"><label class="l" for="emName">姓名 <span class="req">*</span></label>
+        <div class="f full sub-h">{{ t('emergency') }}</div>
+        <div class="f" :class="bad('emName')"><label class="l" for="emName">{{ t('emName') }} <span class="req">*</span></label>
           <input type="text" id="emName" v-model="form.emName" maxlength="50"><div class="msg">{{ errs.emName }}</div></div>
-        <div class="f" :class="bad('emRel')"><label class="l" for="emRel">關係 <span class="req">*</span></label>
+        <div class="f" :class="bad('emRel')"><label class="l" for="emRel">{{ t('emRel') }} <span class="req">*</span></label>
           <input type="text" id="emRel" v-model="form.emRel" maxlength="30"><div class="msg">{{ errs.emRel }}</div></div>
-        <div class="f full" :class="bad('emPhone')"><label class="l" for="emPhone">聯絡電話 <span class="req">*</span></label>
+        <div class="f full" :class="bad('emPhone')"><label class="l" for="emPhone">{{ t('emPhone') }} <span class="req">*</span></label>
           <input type="tel" id="emPhone" v-model="form.emPhone" maxlength="30"><div class="msg">{{ errs.emPhone }}</div></div>
 
-        <div class="f full" :class="bad('needs')"><label class="l" for="needs">飲食限制／過敏原或參與活動所需協助 <span class="req">*</span></label>
-          <textarea id="needs" v-model="form.needs" maxlength="1000" placeholder="無則填「無」"></textarea><div class="msg">{{ errs.needs }}</div></div>
+        <div class="f full" :class="bad('needs')"><label class="l" for="needs">{{ t('needs') }} <span class="req">*</span></label>
+          <textarea id="needs" v-model="form.needs" maxlength="1000" :placeholder="t('needs_ph')"></textarea><div class="msg">{{ errs.needs }}</div></div>
       </div>
     </section>
 
     <!-- 四、確認送出 -->
     <section class="card">
-      <h2><span class="n">4</span>確認送出</h2>
+      <h2><span class="n">4</span>{{ t('s4') }}</h2>
       <div class="f" :class="bad('consent')">
-        <label class="consent"><input type="checkbox" v-model="form.consent"><span>我確認以上資料正確，並了解報名完成不代表正式錄取；報名資料僅供本活動聯繫、安排與安全管理使用。</span></label>
+        <label class="consent"><input type="checkbox" v-model="form.consent"><span>{{ t('consent') }}</span></label>
         <div class="msg" style="margin-bottom:10px">{{ errs.consent }}</div>
       </div>
       <div class="actions">
         <button type="submit" class="btn primary" :disabled="submitting">
-          {{ submitting ? '送出中…（伺服器剛醒來時可能要等一下）' : (saved ? '更新報名資料' : '送出報名') }}
+          {{ submitting ? t('sending') : (saved ? t('update') : t('submit')) }}
         </button>
-        <span class="status" :class="{err: status.err}" v-if="status.text">{{ status.text }}</span>
+        <span class="status" :class="{err: status.err}" v-if="status.key">{{ t(status.key) }}</span>
       </div>
     </section>
   </form>
 </div>
 
-  <footer>個人資料僅供本活動聯繫、安排與安全管理使用，並妥善保管。</footer>
+  <footer>{{ t('footer') }}</footer>
 </main>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@3.4.38/dist/vue.global.prod.js"></script>
 <script src="config.js"></script>
+<script src="i18n.js"></script>
 <script src="options.js"></script>
 <script src="api.js"></script>
 <script src="app.js"></script>

@@ -2,7 +2,9 @@
   const { createApp, reactive, ref, computed, watch, onMounted, nextTick } = Vue;
   const { OPTS, DAYS } = window.APP_OPTIONS;
 
+  const T = window.T;
   const SAVED_KEY = "twau2027-registration"; // 存 { id, token }，用來回來修改
+  const LANG_KEY = "twau2027-lang";
 
   const blankForm = () => ({
     nameZh: "", nameEn: "", gender: "", dob: "", phone: "", email: "", lineId: "",
@@ -16,10 +18,10 @@
   const REQUIRED_TEXT = ["nameZh", "nameEn", "dob", "phone", "email", "emName", "emRel", "emPhone", "needs"];
   const REQUIRED_PICK = ["gender", "region", "role", "attendance", "lodging"];
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // 錯誤訊息存 i18n.js 的 key，畫面上再翻成目前語言
   const M = {
-    req: "此欄為必填", pick: "請選擇一項", multi: "請至少勾選一項（不參加請勾「暫不參與」）",
-    email: "請輸入有效的電子郵件", consent: "請勾選同意後再送出",
-    other: "請填寫「其他」的內容", partial: "請選擇參與的起訖日期", range: "結束日期不可早於開始日期"
+    req: "m_req", pick: "m_pick", multi: "m_multi", email: "m_email", consent: "m_consent",
+    other: "m_other", partial: "m_partial", range: "m_range"
   };
 
   const ls = {
@@ -51,6 +53,16 @@
 
   createApp({
     setup() {
+      const lang = ref(ls.get(LANG_KEY) === "en" ? "en" : "zh");
+      const t = k => (T[k] && T[k][lang.value] !== undefined) ? T[k][lang.value] : k;
+      function setLang(l) {
+        lang.value = l;
+        ls.set(LANG_KEY, l);
+        document.documentElement.lang = l === "zh" ? "zh-Hant" : "en";
+        document.title = t("doc_title");
+      }
+      setLang(lang.value);
+
       const tab = ref(tabFromHash());
       function go(t) {
         if (tabFromHash() !== t) history.pushState(null, "", t === "register" ? "#register" : "#brochure");
@@ -63,13 +75,18 @@
       const tried = ref(false);       // 按過送出後才開始顯示紅框
       const submitting = ref(false);
       const done = ref(false);
-      const status = reactive({ text: "", err: false });
       const saved = ref(readSaved());
       const server = ref("checking"); // checking | waking | ok | down
       const loadedPrev = ref(false);
 
-      const errs = computed(() => tried.value ? validate(form) : {});
-      const bad = k => ({ bad: !!errs.value[k] });
+      const errKeys = computed(() => tried.value ? validate(form) : {});
+      const errs = computed(() => {
+        const out = {};
+        Object.keys(errKeys.value).forEach(k => { out[k] = t(errKeys.value[k]); });
+        return out;
+      });
+      const bad = k => ({ bad: !!errKeys.value[k] });
+      const status = reactive({ key: "", err: false });
 
       // 「暫不參與」與其他選項互斥：勾了暫不參與就清掉其他；勾其他就取消暫不參與
       ["sports", "market"].forEach(key => {
@@ -103,9 +120,9 @@
 
       async function submit() {
         tried.value = true;
-        status.text = "";
-        if (Object.keys(errs.value).length) {
-          status.text = "還有欄位需要填寫，請檢查紅框處。"; status.err = true;
+        status.key = "";
+        if (Object.keys(errKeys.value).length) {
+          status.key = "m_fix"; status.err = true;
           await nextTick();
           const first = document.querySelector(".f.bad");
           if (first) first.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -128,9 +145,9 @@
           window.scrollTo({ top: 0, behavior: "smooth" });
         } catch (e) {
           status.err = true;
-          if (e.status === 404 && saved.value) { forget(); status.text = "找不到您先前的報名紀錄，請再按一次送出，將建立新的報名。"; }
-          else if (e.status === 400) status.text = "資料格式有誤，請檢查後再送出。";
-          else status.text = "送出失敗，請檢查網路後再試一次。";
+          if (e.status === 404 && saved.value) { forget(); status.key = "m_gone"; }
+          else if (e.status === 400) status.key = "m_invalid";
+          else status.key = "m_fail";
         } finally {
           submitting.value = false;
         }
@@ -150,7 +167,7 @@
         }
       });
 
-      return { tab, go, OPTS, DAYS, form, errs, bad, submit, submitting, done, status, saved, server, loadedPrev };
+      return { lang, t, setLang, tab, go, OPTS, DAYS, form, errs, bad, submit, submitting, done, status, saved, server, loadedPrev };
     }
   }).mount("#app");
 })();
