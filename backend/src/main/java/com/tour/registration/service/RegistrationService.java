@@ -37,9 +37,8 @@ public class RegistrationService {
     public record Created(String id, String editToken) {
     }
 
-    public record Stats(int registrations, int travellers,
-                        Map<String, Integer> room, Map<String, Integer> diet,
-                        Map<String, Integer> visa, Map<String, Integer> insurance) {
+    /** registrations = 報名人數；breakdown = 每個選項欄位的「代碼 → 人數」（複選題每個勾選各算一次）。 */
+    public record Stats(int registrations, Map<String, Map<String, Integer>> breakdown) {
     }
 
     public Created create(Registration r) {
@@ -70,22 +69,22 @@ public class RegistrationService {
     }
 
     public static Stats stats(List<StoredRegistration> all) {
-        Map<String, Integer> room = new TreeMap<>();
-        Map<String, Integer> diet = new TreeMap<>();
-        Map<String, Integer> visa = new TreeMap<>();
-        Map<String, Integer> insurance = new TreeMap<>();
-        int travellers = 0;
+        Map<String, Map<String, Integer>> b = new LinkedHashMap<>();
+        for (String k : List.of("region", "role", "attendance", "lodging", "sports", "market", "marketHelp", "otherHelp")) {
+            b.put(k, new TreeMap<>());
+        }
         for (StoredRegistration s : all) {
             Registration r = s.data();
-            travellers += r.travellerCount();
-            room.merge(r.room(), 1, Integer::sum);
-            diet.merge(r.diet(), 1, Integer::sum);
-            visa.merge(r.visa(), 1, Integer::sum);
-            insurance.merge(r.insurance(), 1, Integer::sum);
+            b.get("region").merge(r.region(), 1, Integer::sum);
+            b.get("role").merge(r.role(), 1, Integer::sum);
+            b.get("attendance").merge(r.attendance(), 1, Integer::sum);
+            b.get("lodging").merge(r.lodging(), 1, Integer::sum);
+            r.sports().forEach(c -> b.get("sports").merge(c, 1, Integer::sum));
+            r.market().forEach(c -> b.get("market").merge(c, 1, Integer::sum));
+            r.marketHelp().forEach(c -> b.get("marketHelp").merge(c, 1, Integer::sum));
+            r.otherHelp().forEach(c -> b.get("otherHelp").merge(c, 1, Integer::sum));
         }
-        return new Stats(all.size(), travellers,
-                new LinkedHashMap<>(room), new LinkedHashMap<>(diet),
-                new LinkedHashMap<>(visa), new LinkedHashMap<>(insurance));
+        return new Stats(all.size(), b);
     }
 
     private String now() {
@@ -93,7 +92,7 @@ public class RegistrationService {
     }
 
     private String newId() {
-        StringBuilder sb = new StringBuilder("AU-");
+        StringBuilder sb = new StringBuilder("TA-");
         for (int i = 0; i < 6; i++) {
             sb.append(ID_CHARS.charAt(random.nextInt(ID_CHARS.length())));
         }

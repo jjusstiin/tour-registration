@@ -1,4 +1,4 @@
-# 澳洲 9 日遊報名表
+# 2027年臺澳青年推動惠民啟蘊交流活動 — 簡章與線上報名
 
 ```
 報名者瀏覽器 ──► GitHub Pages（frontend/，Vue 靜態網頁）
@@ -12,7 +12,7 @@
 
 | 資料夾 | 內容 |
 |---|---|
-| `frontend/` | 報名頁 `index.html`、主辦方頁 `admin.html`。**部署設定只改 `config.js`**，行程日期改 `i18n.js` 最上面 |
+| `frontend/` | `index.html`（上方分頁切換「活動簡章／線上報名」，網址加 `#register` 可直接開報名表）、主辦方頁 `admin.html`。**部署設定只改 `config.js`**；簡章文字直接改 `index.html`；選項改 `options.js` |
 | `backend/` | Spring Boot API。沒設 Google 金鑰時自動用記憶體暫存，方便本機先試 |
 | `.github/workflows/pages.yml` | push 到 main 時自動把 `frontend/` 發佈到 GitHub Pages |
 
@@ -62,7 +62,7 @@ $env:GOOGLE_CREDENTIALS_FILE="secrets\你的金鑰檔.json"
 $env:ADMIN_TOKEN="local-admin"
 mvn spring-boot:run
 ```
-送出一筆後，試算表會自動多出「報名名單」分頁、標題列和資料。
+送出一筆後，試算表會自動多出「2027臺澳交流報名」分頁、標題列和資料。
 
 ## 步驟 3：上傳到 GitHub
 
@@ -110,6 +110,6 @@ mvn spring-boot:run
 
 - **Render 免費方案會休眠**：閒置 15 分鐘後睡著，下一個人打開頁面要等 30–60 秒。前端已經會一打開就先叫醒它並顯示提示。
 - **報名者修改資料**：送出後瀏覽器會記住「報名編號＋修改憑證」，同一台裝置、同一個瀏覽器再打開就能修改。換裝置或清除瀏覽器資料就改不了，請他聯絡主辦方，由主辦方直接改試算表。
-- **主辦方直接改試算表**：可以改內容、排序，但**不要改第 1 列標題、不要刪「報名編號」與最後一欄「同行者資料(系統用)」**。要刪除某筆報名，直接刪掉那一列即可。
+- **主辦方直接改試算表**：可以排序、加註記、刪整列（＝刪除該筆報名）。但**不要改第 1 列標題、不要刪「報名編號」與最後一欄「完整資料(系統用)」**。系統讀回資料以最後一欄為準，所以在試算表改中間欄位的內容，不會反映到主辦方頁面或報名者的修改畫面。
 - **金鑰外洩怎麼辦**：到 Google Cloud 該服務帳戶 → 金鑰 → 刪除舊金鑰、建立新金鑰，更新 Render 的 `GOOGLE_CREDENTIALS_JSON`。
-- **改選項**（例如加一種房型）：`frontend/i18n.js` 的 `OPTS`、`backend/.../model/Options.java` 的對照表與 `*_RE` 都要改。
+- **改選項**（例如加一個地區）：`frontend/options.js` 的 `OPTS`、`backend/.../model/Options.java` 的對照表與 `*_RE` 都要改。

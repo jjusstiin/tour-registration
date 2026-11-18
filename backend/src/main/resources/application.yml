@@ -10,7 +10,7 @@ app:
     credentials-file: ${GOOGLE_CREDENTIALS_FILE:}
   sheet:
     id: ${SHEET_ID:}
-    tab: ${SHEET_TAB:報名名單}
+    tab: ${SHEET_TAB:2027臺澳交流報名}
   # 主辦方查看報名名單用的密碼，請設一組夠長的亂數
   admin-token: ${ADMIN_TOKEN:}
   # 允許呼叫 API 的前端網址（逗號分隔），例如 https://你的帳號.github.io

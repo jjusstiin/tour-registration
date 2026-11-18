@@ -1,35 +1,32 @@
 package com.tour.registration.store;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tour.registration.model.Companion;
 import com.tour.registration.model.Options;
 import com.tour.registration.model.Registration;
 import com.tour.registration.model.StoredRegistration;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
- * 報名資料 ↔ 試算表一列 的轉換。欄位順序就是試算表的欄位順序。
- * 要加欄位：請加在最後面（「同行者資料」之前也行，但要同時改 toRow / fromRow 的索引）。
+ * 報名資料 ↔ 試算表一列。
+ * 中間的欄位是給主辦方看的中文；最後一欄是完整資料（JSON），系統讀回時以它為準。
+ * 所以主辦方在試算表手動改內容只影響試算表本身，不會改到報名者讀回來的資料。
  */
 public class SheetRowMapper {
 
     public static final List<String> HEADERS = List.of(
-            "報名編號", "修改憑證(雜湊)", "報名時間", "更新時間", "語言",
-            "中文姓名", "護照英文姓", "護照英文名", "性別", "出生日期", "國籍",
-            "護照號碼", "護照到期日", "簽證/ETA",
-            "手機", "Email", "LINE/WeChat", "通訊地址",
-            "緊急聯絡人", "緊急聯絡人關係", "緊急聯絡人電話",
-            "房型", "指定同房者", "飲食", "健康狀況", "旅遊保險",
-            "同行者人數", "本筆總人數", "同行者明細", "其他需求",
-            "同行者資料(系統用,請勿修改)");
+            "報名編號", "修改憑證(雜湊)", "報名時間", "更新時間",
+            "中文姓名", "英文姓名(護照拼音)", "性別", "出生日期",
+            "電話", "Email", "LINE ID/其他", "所屬地區", "關心人/壇主", "參與身分",
+            "參與日期", "07/17運動聯誼", "07/18文化美食市集", "市集可協助項目", "其他協助意願",
+            "住宿安排", "抵達布里斯本日期", "抵達班機時間/號碼", "離開布里斯本日期", "離開班機時間/號碼",
+            "緊急聯絡人", "緊急聯絡人關係", "緊急聯絡電話", "飲食限制/過敏原/所需協助",
+            "完整資料(系統用,請勿修改)");
 
-    private static final TypeReference<List<Companion>> COMPANIONS = new TypeReference<>() {
-    };
+    private static final int ID = 0, TOKEN = 1, SUBMITTED = 2, UPDATED = 3;
+    private static final int DATA = HEADERS.size() - 1;
 
     private final ObjectMapper json;
 
@@ -44,82 +41,57 @@ public class SheetRowMapper {
         row.add(s.tokenHash());
         row.add(s.submittedAt());
         row.add(s.updatedAt());
-        row.add(n(r.lang()));
         row.add(n(r.nameZh()));
-        row.add(n(r.surname()));
-        row.add(n(r.given()));
+        row.add(n(r.nameEn()));
         row.add(Options.label(Options.GENDER, r.gender()));
         row.add(n(r.dob()));
-        row.add(n(r.nationality()));
-        row.add(n(r.passportNo()));
-        row.add(n(r.passportExp()));
-        row.add(Options.label(Options.VISA, r.visa()));
         row.add(n(r.phone()));
         row.add(n(r.email()));
-        row.add(n(r.im()));
-        row.add(n(r.address()));
+        row.add(n(r.lineId()));
+        row.add(Options.label(Options.REGION, r.region(), r.regionOther()));
+        row.add(n(r.mentor()));
+        row.add(Options.label(Options.ROLE, r.role(), r.roleOther()));
+        row.add(attendanceText(r));
+        row.add(Options.labels(Options.SPORTS, r.sports(), null));
+        row.add(Options.labels(Options.MARKET, r.market(), null));
+        row.add(Options.labels(Options.MARKET_HELP, r.marketHelp(), r.marketHelpOther()));
+        row.add(Options.labels(Options.OTHER_HELP, r.otherHelp(), r.otherHelpOther()));
+        row.add(Options.label(Options.LODGING, r.lodging()));
+        row.add(n(r.arrivalDate()));
+        row.add(n(r.arrivalFlight()));
+        row.add(n(r.departureDate()));
+        row.add(n(r.departureFlight()));
         row.add(n(r.emName()));
         row.add(n(r.emRel()));
         row.add(n(r.emPhone()));
-        row.add(Options.label(Options.ROOM, r.room()));
-        row.add(n(r.roommate()));
-        row.add(Options.label(Options.DIET, r.diet()));
-        row.add(n(r.health()));
-        row.add(Options.label(Options.INSURANCE, r.insurance()));
-        row.add(r.companions().size());
-        row.add(r.travellerCount());
-        row.add(companionSummary(r.companions()));
-        row.add(n(r.notes()));
-        row.add(writeJson(r.companions()));
+        row.add(n(r.needs()));
+        row.add(writeJson(r));
         return row;
     }
 
+    /** @throws IllegalArgumentException 最後一欄的 JSON 遺失或被改壞時 */
     public StoredRegistration fromRow(List<Object> row) {
-        Registration r = new Registration(
-                get(row, 5), get(row, 6), get(row, 7),
-                Options.code(Options.GENDER, get(row, 8)),
-                get(row, 9), get(row, 10),
-                get(row, 11), get(row, 12),
-                Options.code(Options.VISA, get(row, 13)),
-                get(row, 14), get(row, 15), get(row, 16), get(row, 17),
-                get(row, 18), get(row, 19), get(row, 20),
-                Options.code(Options.ROOM, get(row, 21)),
-                get(row, 22),
-                Options.code(Options.DIET, get(row, 23)),
-                get(row, 24),
-                Options.code(Options.INSURANCE, get(row, 25)),
-                readJson(get(row, 30)),
-                get(row, 29),
-                true,
-                get(row, 4).isEmpty() ? "zh" : get(row, 4));
-        return new StoredRegistration(get(row, 0), get(row, 1), get(row, 2), get(row, 3), r);
-    }
-
-    /** 給主辦方看的一行文字，例如「CHEN DA MING(男, 1980-01-01, 護照 A123, 到期 2030-01-01, 配偶)」。 */
-    static String companionSummary(List<Companion> companions) {
-        return companions.stream()
-                .map(c -> String.format("%s %s(%s, %s, 護照 %s, 到期 %s, %s)",
-                        n(c.surname()), n(c.given()), Options.label(Options.GENDER, c.gender()),
-                        n(c.dob()), n(c.passportNo()), n(c.passportExp()), n(c.relation())))
-                .collect(Collectors.joining("\n"));
-    }
-
-    private String writeJson(List<Companion> companions) {
+        String data = get(row, DATA);
         try {
-            return json.writeValueAsString(companions);
+            Registration r = json.readValue(data, Registration.class);
+            return new StoredRegistration(get(row, ID), get(row, TOKEN), get(row, SUBMITTED), get(row, UPDATED), r);
+        } catch (JsonProcessingException | IllegalArgumentException e) {
+            throw new IllegalArgumentException("第 " + get(row, ID) + " 筆的完整資料欄無法讀取", e);
+        }
+    }
+
+    static String attendanceText(Registration r) {
+        if ("partial".equals(r.attendance())) {
+            return "部分日期：07/" + r.partialFrom() + "-07/" + r.partialTo();
+        }
+        return Options.label(Options.ATTENDANCE, r.attendance());
+    }
+
+    private String writeJson(Registration r) {
+        try {
+            return json.writeValueAsString(r);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException(e);
-        }
-    }
-
-    private List<Companion> readJson(String s) {
-        if (s.isBlank()) {
-            return List.of();
-        }
-        try {
-            return json.readValue(s, COMPANIONS);
-        } catch (JsonProcessingException e) {
-            return List.of(); // 被手動改壞時不讓整個系統掛掉
         }
     }
 

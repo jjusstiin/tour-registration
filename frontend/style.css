@@ -15,7 +15,9 @@ header.hero svg{position:absolute;right:-30px;bottom:-10px;opacity:.22;width:340
 .lang{display:inline-flex;background:rgba(0,0,0,.18);border-radius:99px;padding:3px}
 .lang button{border:0;background:transparent;color:#fff;font:inherit;font-size:13px;padding:5px 14px;border-radius:99px;cursor:pointer}
 .lang button.on{background:#fff;color:var(--ochre-d);font-weight:700}
-h1{font-family:Fraunces,"Noto Sans TC",serif;font-size:clamp(26px,5vw,38px);line-height:1.2;margin:0 0 8px}
+h1{font-family:"Noto Serif TC","Noto Sans TC",serif;font-size:clamp(24px,4.6vw,36px);line-height:1.3;margin:0 0 10px;letter-spacing:.02em}
+.br-sm{display:none}
+@media (max-width:600px){.br-sm{display:inline}}
 .sub{opacity:.95;margin:0}
 .facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .facts span{background:rgba(255,255,255,.2);border-radius:8px;padding:5px 10px;font-size:13px}
@@ -66,10 +68,50 @@ input:focus,select:focus,textarea:focus{border-color:var(--euc);box-shadow:0 0 0
 .refno b{font-family:ui-monospace,Consolas,monospace;font-size:18px;letter-spacing:.06em;color:var(--euc)}
 footer{color:var(--muted);font-size:12.5px;text-align:center;margin-top:24px}
 
+/* 簡章 / 報名 分頁 */
+header.hero{margin-bottom:0}
+.tabbar{position:sticky;top:0;z-index:10;background:rgba(247,243,236,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);margin-bottom:22px}
+.tabbar .tabs{display:flex;gap:6px;padding-top:10px;padding-bottom:0}
+.tabbar button{flex:1;max-width:200px;border:0;background:none;font:inherit;font-size:16px;font-weight:500;color:var(--muted);padding:10px 8px 12px;cursor:pointer;border-bottom:3px solid transparent}
+.tabbar button.on{color:var(--ochre-d);border-bottom-color:var(--ochre);font-weight:700}
+.tabbar button:hover{color:var(--ink)}
+
+/* 簡章內容 */
+.doc{padding-bottom:18px}
+.doc h2{margin-bottom:12px!important}
+.doc p{margin:0}
+.kv{display:grid;grid-template-columns:110px 1fr;margin:0;border-top:1px solid var(--line)}
+.kv dt,.kv dd{padding:10px 0;border-bottom:1px solid var(--line);margin:0}
+.kv dt{font-weight:500;color:var(--euc)}
+@media (max-width:600px){.kv{grid-template-columns:1fr}.kv dt{border-bottom:0;padding-bottom:0}.kv dd{padding-top:2px}}
+.hl{display:inline-block;background:#fdeee0;color:var(--ochre-d);border-radius:6px;padding:0 6px;margin-right:6px;font-weight:500}
+.timeline{list-style:none;margin:0;padding:0;border-left:2px solid var(--line);margin-left:6px}
+.timeline li{position:relative;padding:6px 0 10px 18px;display:grid;grid-template-columns:150px 1fr;gap:4px 12px}
+.timeline li::before{content:"";position:absolute;left:-7px;top:12px;width:12px;height:12px;border-radius:50%;background:var(--card);border:2px solid var(--euc)}
+.timeline li.key::before{background:var(--ochre);border-color:var(--ochre)}
+.timeline li.key span{font-weight:500;color:var(--ochre-d)}
+.timeline b{font-weight:500}
+@media (max-width:600px){.timeline li{grid-template-columns:1fr}}
+.bul{margin:0;padding-left:20px}
+.bul li{margin-bottom:6px}
+.contacts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px 16px}
+.contacts span{display:inline-block;min-width:64px;color:var(--muted);font-size:13px}
+.cta{text-align:center;padding:26px 22px;background:linear-gradient(135deg,#fff8f0,#fdeee0)}
+.cta h2{justify-content:center}
+
+/* 報名表：其他 / 子題 */
+.other-in{margin-top:8px}
+.range{margin-top:10px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:14px}
+.range select{width:auto;padding:6px 10px}
+.sub-q{margin-top:12px;padding:12px 14px;border-left:3px solid var(--sky);background:#fbfaf6;border-radius:0 10px 10px 0}
+.sub-q label.l{font-size:13px;color:var(--muted)}
+.sub-h{margin:6px 0 8px;font-weight:700;color:var(--euc);font-size:14.5px;border-top:1px dashed var(--line);padding-top:14px}
+.sub-h .hint{font-weight:400;margin:0}
+
 /* admin */
 .stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
 .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 16px;min-width:120px}
-.stat b{display:block;font-size:24px;font-family:Fraunces,serif}
+.stat b{display:block;font-size:24px;font-family:"Noto Serif TC",serif}
 .stat span{font-size:12.5px;color:var(--muted)}
 .breakdown{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
 .breakdown div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:13.5px}

@@ -49,7 +49,11 @@ public class SheetsRegistrationStore implements RegistrationStore {
             if (values != null) {
                 for (List<Object> row : values) {
                     if (!row.isEmpty() && !row.get(0).toString().isBlank()) {
-                        result.add(mapper.fromRow(row));
+                        try {
+                            result.add(mapper.fromRow(row));
+                        } catch (IllegalArgumentException e) {
+                            log.warn("略過無法讀取的列：{}", e.getMessage());
+                        }
                     }
                 }
             }

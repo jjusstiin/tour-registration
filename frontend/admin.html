@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex">
 <title>報名名單（主辦方）</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>.wrap{max-width:1200px}</style>
 </head>
@@ -15,7 +15,7 @@
 <header class="hero">
   <div class="wrap">
     <div class="topbar"><span class="badge">主辦方專用</span></div>
-    <h1>澳洲 9 日遊 · 報名名單</h1>
+    <h1>2027 臺澳青年交流・報名名單</h1>
     <p class="sub">資料即時讀取自 Google 試算表。<a v-if="sheetUrl" :href="sheetUrl" target="_blank" rel="noopener" style="color:#fff">開啟試算表 ↗</a></p>
   </div>
 </header>
@@ -23,7 +23,7 @@
 <main class="wrap">
   <section class="card" v-if="!data">
     <div class="f">
-      <label class="l" for="tok">管理密碼（Render 上設定的 ADMIN_TOKEN）</label>
+      <label class="l" for="tok">管理密碼</label>
       <form class="login" @submit.prevent="load">
         <input type="password" id="tok" v-model="token" autocomplete="current-password">
         <button class="btn primary" :disabled="loading || !token">{{ loading ? '讀取中…' : '登入' }}</button>
@@ -35,14 +35,15 @@
 
   <template v-if="data">
     <div class="stats">
-      <div class="stat"><b>{{ data.stats.registrations }}</b><span>報名筆數</span></div>
-      <div class="stat"><b>{{ data.stats.travellers }}</b><span>總人數（含同行者）</span></div>
+      <div class="stat"><b>{{ data.stats.registrations }}</b><span>報名人數</span></div>
+      <div class="stat"><b>{{ count('attendance', 'full') }}</b><span>全程參與</span></div>
+      <div class="stat"><b>{{ count('lodging', 'need') }}</b><span>需要安排住宿</span></div>
     </div>
     <div class="breakdown">
       <div v-for="g in groups" :key="g.key">
-        <h4>{{ g.title }}（以報名人計）</h4>
-        <p v-for="(n, code) in data.stats[g.key]" :key="code"><span>{{ label(g.key, code) }}</span><b>{{ n }}</b></p>
-        <p v-if="!Object.keys(data.stats[g.key]).length"><span class="hint">—</span></p>
+        <h4>{{ g.title }}</h4>
+        <p v-for="(n, code) in data.stats.breakdown[g.key]" :key="code"><span>{{ label(g.key, code) }}</span><b>{{ n }}</b></p>
+        <p v-if="!Object.keys(data.stats.breakdown[g.key] || {}).length"><span class="hint">—</span></p>
       </div>
     </div>
     <div class="actions" style="margin-top:0">
@@ -57,7 +58,7 @@
         <tbody>
           <tr v-if="!data.rows.length"><td :colspan="cols.length">目前還沒有人報名。</td></tr>
           <tr v-for="(r, i) in data.rows" :key="r.id">
-            <td v-for="c in cols" :key="c.h" :class="{'wrap-cell': c.wrap}">{{ c.v(r, i) }}</td>
+            <td v-for="c in cols" :key="c.h" :class="{'wrap-cell': c.wrap}">{{ c.v(r.registration, i, r) }}</td>
           </tr>
         </tbody>
       </table>
@@ -68,7 +69,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/vue@3.4.38/dist/vue.global.prod.js"></script>
 <script src="config.js"></script>
-<script src="i18n.js"></script>
+<script src="options.js"></script>
 <script src="api.js"></script>
 <script src="admin.js"></script>
 </body>
