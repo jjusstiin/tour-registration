@@ -1,0 +1,18 @@
+server:
+  port: ${PORT:8080}
+
+app:
+  # 二擇一：把服務帳戶金鑰 JSON 的「整段內容」放 GOOGLE_CREDENTIALS_JSON（Render 用這個），
+  # 或把金鑰檔路徑放 GOOGLE_CREDENTIALS_FILE（本機開發用這個）。
+  # 兩者都沒設 → 自動改用「記憶體暫存」，方便本機先試跑（重開就清空）。
+  google:
+    credentials-json: ${GOOGLE_CREDENTIALS_JSON:}
+    credentials-file: ${GOOGLE_CREDENTIALS_FILE:}
+  sheet:
+    id: ${SHEET_ID:}
+    tab: ${SHEET_TAB:報名名單}
+  # 主辦方查看報名名單用的密碼，請設一組夠長的亂數
+  admin-token: ${ADMIN_TOKEN:}
+  # 允許呼叫 API 的前端網址（逗號分隔），例如 https://你的帳號.github.io
+  allowed-origins: ${ALLOWED_ORIGINS:http://localhost:5500,http://127.0.0.1:5500}
+  timezone: ${APP_TIMEZONE:Asia/Taipei}

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>澳洲 9 日遊 報名表</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app" v-cloak>
+
+<header class="hero">
+  <svg viewBox="0 0 400 200" aria-hidden="true"><path fill="#fff" d="M10 190 L10 160 Q40 150 60 120 L80 120 L80 100 Q140 60 200 100 L200 80 L230 80 L230 100 Q300 60 370 110 L390 190 Z"/><circle cx="320" cy="40" r="24" fill="#fff"/></svg>
+  <div class="wrap">
+    <div class="topbar">
+      <span class="badge">{{ t('badge') }}</span>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" :class="{on: lang === 'zh'}" @click="setLang('zh')">中文</button>
+        <button type="button" :class="{on: lang === 'en'}" @click="setLang('en')">English</button>
+      </div>
+    </div>
+    <h1>{{ t('title') }}</h1>
+    <p class="sub">{{ t('subtitle') }}</p>
+    <div class="facts">
+      <span>{{ t('fact_days') }}</span><span>{{ t('fact_date') }}</span><span>{{ t('fact_deadline') }}</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="notice" v-if="server === 'waking'">{{ t('s_waking') }}</div>
+  <div class="notice off" v-if="server === 'down'">{{ t('s_down') }}</div>
+  <div class="notice" v-if="loadedPrev && !done">{{ t('loaded') }}</div>
+
+  <!-- 送出成功 -->
+  <section class="card" v-if="done">
+    <div class="done">
+      <div class="tick">✓</div>
+      <h2 style="margin:0 0 6px">{{ t('done_title') }}</h2>
+      <p class="hint">{{ t('done_body') }}</p>
+      <p class="refno" v-if="saved">{{ t('ref_no') }}<b>{{ saved.id }}</b></p>
+      <button type="button" class="btn ghost" @click="done = false">{{ t('done_edit') }}</button>
+    </div>
+  </section>
+
+  <form v-show="!done" @submit.prevent="submit" novalidate>
+    <!-- 1 旅客基本資料 -->
+    <section class="card">
+      <h2><span class="n">1</span>{{ t('s1') }}</h2>
+      <p class="hint">{{ t('s1_hint') }}</p>
+      <div class="grid">
+        <div class="f full"><label class="l" for="nameZh">{{ t('nameZh') }}</label>
+          <input type="text" id="nameZh" v-model="form.nameZh" autocomplete="name" maxlength="50"></div>
+        <div class="f" :class="bad('surname')"><label class="l" for="surname">{{ t('surname') }} <span class="req">*</span></label>
+          <input type="text" id="surname" class="upper" v-model="form.surname" placeholder="CHEN" maxlength="60"><div class="msg">{{ msg('surname') }}</div></div>
+        <div class="f" :class="bad('given')"><label class="l" for="given">{{ t('given') }} <span class="req">*</span></label>
+          <input type="text" id="given" class="upper" v-model="form.given" placeholder="TAI MING" maxlength="60"><div class="msg">{{ msg('given') }}</div></div>
+        <div class="f" :class="bad('gender')"><label class="l">{{ t('gender') }} <span class="req">*</span></label>
+          <div class="chips"><label v-for="o in OPTS.gender" :key="o[0]"><input type="radio" name="gender" :value="o[0]" v-model="form.gender"><span>{{ o[1][lang] }}</span></label></div>
+          <div class="msg">{{ msg('gender') }}</div></div>
+        <div class="f" :class="bad('dob')"><label class="l" for="dob">{{ t('dob') }} <span class="req">*</span></label>
+          <input type="date" id="dob" v-model="form.dob"><div class="msg">{{ msg('dob') }}</div></div>
+        <div class="f full" :class="bad('nationality')"><label class="l" for="nationality">{{ t('nationality') }} <span class="req">*</span></label>
+          <input type="text" id="nationality" v-model="form.nationality" maxlength="60"><div class="msg">{{ msg('nationality') }}</div></div>
+      </div>
+    </section>
+
+    <!-- 2 護照與簽證 -->
+    <section class="card">
+      <h2><span class="n">2</span>{{ t('s2') }}</h2>
+      <p class="hint">{{ t('s2_hint') }}</p>
+      <div class="grid">
+        <div class="f" :class="bad('passportNo')"><label class="l" for="passportNo">{{ t('passportNo') }} <span class="req">*</span></label>
+          <input type="text" id="passportNo" class="upper" v-model="form.passportNo" maxlength="30"><div class="msg">{{ msg('passportNo') }}</div></div>
+        <div class="f" :class="bad('passportExp')"><label class="l" for="passportExp">{{ t('passportExp') }} <span class="req">*</span></label>
+          <input type="date" id="passportExp" v-model="form.passportExp"><div class="msg">{{ msg('passportExp') }}</div>
+          <div class="warn" v-if="expWarn(form.passportExp)">{{ t('exp_warn') }}</div></div>
+        <div class="f full" :class="bad('visa')"><label class="l">{{ t('visa') }} <span class="req">*</span></label>
+          <div class="chips"><label v-for="o in OPTS.visa" :key="o[0]"><input type="radio" name="visa" :value="o[0]" v-model="form.visa"><span>{{ o[1][lang] }}</span></label></div>
+          <div class="msg">{{ msg('visa') }}</div></div>
+      </div>
+    </section>
+
+    <!-- 3 聯絡方式 -->
+    <section class="card">
+      <h2><span class="n">3</span>{{ t('s3') }}</h2>
+      <div class="grid">
+        <div class="f" :class="bad('phone')"><label class="l" for="phone">{{ t('phone') }} <span class="req">*</span></label>
+          <input type="tel" id="phone" v-model="form.phone" autocomplete="tel" maxlength="30"><div class="msg">{{ msg('phone') }}</div></div>
+        <div class="f" :class="bad('email')"><label class="l" for="email">{{ t('email') }} <span class="req">*</span></label>
+          <input type="email" id="email" v-model="form.email" autocomplete="email" maxlength="120"><div class="msg">{{ msg('email') }}</div></div>
+        <div class="f"><label class="l" for="im">{{ t('im') }}</label>
+          <input type="text" id="im" v-model="form.im" maxlength="60"></div>
+        <div class="f"><label class="l" for="address">{{ t('address') }}</label>
+          <input type="text" id="address" v-model="form.address" autocomplete="street-address" maxlength="200"></div>
+      </div>
+    </section>
+
+    <!-- 4 緊急聯絡人 -->
+    <section class="card">
+      <h2><span class="n">4</span>{{ t('s4') }}</h2>
+      <p class="hint">{{ t('s4_hint') }}</p>
+      <div class="grid">
+        <div class="f" :class="bad('emName')"><label class="l" for="emName">{{ t('emName') }} <span class="req">*</span></label>
+          <input type="text" id="emName" v-model="form.emName" maxlength="50"><div class="msg">{{ msg('emName') }}</div></div>
+        <div class="f" :class="bad('emRel')"><label class="l" for="emRel">{{ t('emRel') }} <span class="req">*</span></label>
+          <input type="text" id="emRel" v-model="form.emRel" maxlength="30"><div class="msg">{{ msg('emRel') }}</div></div>
+        <div class="f full" :class="bad('emPhone')"><label class="l" for="emPhone">{{ t('emPhone') }} <span class="req">*</span></label>
+          <input type="tel" id="emPhone" v-model="form.emPhone" maxlength="30"><div class="msg">{{ msg('emPhone') }}</div></div>
+      </div>
+    </section>
+
+    <!-- 5 行程需求 -->
+    <section class="card">
+      <h2><span class="n">5</span>{{ t('s5') }}</h2>
+      <div class="grid">
+        <div class="f full" :class="bad('room')"><label class="l">{{ t('room') }} <span class="req">*</span></label>
+          <div class="chips"><label v-for="o in OPTS.room" :key="o[0]"><input type="radio" name="room" :value="o[0]" v-model="form.room"><span>{{ o[1][lang] }}</span></label></div>
+          <div class="msg">{{ msg('room') }}</div></div>
+        <div class="f full"><label class="l" for="roommate">{{ t('roommate') }}</label>
+          <input type="text" id="roommate" v-model="form.roommate" maxlength="60"></div>
+        <div class="f full" :class="bad('diet')"><label class="l">{{ t('diet') }} <span class="req">*</span></label>
+          <div class="chips"><label v-for="o in OPTS.diet" :key="o[0]"><input type="radio" name="diet" :value="o[0]" v-model="form.diet"><span>{{ o[1][lang] }}</span></label></div>
+          <div class="msg">{{ msg('diet') }}</div></div>
+        <div class="f full"><label class="l" for="health">{{ t('health') }}</label>
+          <textarea id="health" v-model="form.health" maxlength="1000"></textarea></div>
+        <div class="f full" :class="bad('insurance')"><label class="l">{{ t('insurance') }} <span class="req">*</span></label>
+          <div class="chips"><label v-for="o in OPTS.insurance" :key="o[0]"><input type="radio" name="insurance" :value="o[0]" v-model="form.insurance"><span>{{ o[1][lang] }}</span></label></div>
+          <div class="msg">{{ msg('insurance') }}</div></div>
+      </div>
+    </section>
+
+    <!-- 6 同行者 -->
+    <section class="card">
+      <h2><span class="n">6</span>{{ t('s6') }}</h2>
+      <p class="hint">{{ t('s6_hint') }}</p>
+      <div class="comp" v-for="(c, i) in companions" :key="c.uid">
+        <h3>{{ t('comp') }} {{ i + 1 }}</h3>
+        <button type="button" class="rm" @click="companions.splice(i, 1)">{{ t('remove') }}</button>
+        <div class="grid">
+          <div class="f" :class="cbad(c, 'surname')"><label class="l">{{ t('surname') }} <span class="req">*</span></label>
+            <input type="text" class="upper" v-model="c.surname" maxlength="60"><div class="msg">{{ cmsg(c, 'surname') }}</div></div>
+          <div class="f" :class="cbad(c, 'given')"><label class="l">{{ t('given') }} <span class="req">*</span></label>
+            <input type="text" class="upper" v-model="c.given" maxlength="60"><div class="msg">{{ cmsg(c, 'given') }}</div></div>
+          <div class="f" :class="cbad(c, 'gender')"><label class="l">{{ t('gender') }} <span class="req">*</span></label>
+            <div class="chips"><label v-for="o in OPTS.gender" :key="o[0]"><input type="radio" :name="'cg_' + c.uid" :value="o[0]" v-model="c.gender"><span>{{ o[1][lang] }}</span></label></div>
+            <div class="msg">{{ cmsg(c, 'gender') }}</div></div>
+          <div class="f" :class="cbad(c, 'dob')"><label class="l">{{ t('dob') }} <span class="req">*</span></label>
+            <input type="date" v-model="c.dob"><div class="msg">{{ cmsg(c, 'dob') }}</div></div>
+          <div class="f" :class="cbad(c, 'passportNo')"><label class="l">{{ t('passportNo') }} <span class="req">*</span></label>
+            <input type="text" class="upper" v-model="c.passportNo" maxlength="30"><div class="msg">{{ cmsg(c, 'passportNo') }}</div></div>
+          <div class="f" :class="cbad(c, 'passportExp')"><label class="l">{{ t('passportExp') }} <span class="req">*</span></label>
+            <input type="date" v-model="c.passportExp"><div class="msg">{{ cmsg(c, 'passportExp') }}</div>
+            <div class="warn" v-if="expWarn(c.passportExp)">{{ t('exp_warn') }}</div></div>
+          <div class="f" :class="cbad(c, 'relation')"><label class="l">{{ t('relation') }} <span class="req">*</span></label>
+            <input type="text" v-model="c.relation" maxlength="30"><div class="msg">{{ cmsg(c, 'relation') }}</div></div>
+          <div class="f"><label class="l">{{ t('nameZh') }}</label>
+            <input type="text" v-model="c.nameZh" maxlength="50"></div>
+        </div>
+      </div>
+      <div class="f" v-if="companions.length < 10">
+        <button type="button" class="btn ghost" @click="addComp()">{{ t('add_comp') }}</button>
+      </div>
+    </section>
+
+    <!-- 7 備註與確認 -->
+    <section class="card">
+      <h2><span class="n">7</span>{{ t('s7') }}</h2>
+      <div class="f"><label class="l" for="notes">{{ t('notes') }}</label>
+        <textarea id="notes" v-model="form.notes" maxlength="2000"></textarea></div>
+      <div class="f" :class="bad('consent')">
+        <label class="consent"><input type="checkbox" v-model="form.consent"><span>{{ t('consent') }}</span></label>
+        <div class="msg" style="margin-bottom:10px">{{ msg('consent') }}</div>
+      </div>
+      <div class="actions">
+        <button type="submit" class="btn primary" :disabled="submitting">
+          {{ submitting ? t('sending') : (saved ? t('update') : t('submit')) }}
+        </button>
+        <span class="status" :class="{err: status.err}" v-if="status.key">{{ t(status.key) }}</span>
+      </div>
+    </section>
+  </form>
+
+  <footer>{{ t('footer') }}</footer>
+</main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@3.4.38/dist/vue.global.prod.js"></script>
+<script src="config.js"></script>
+<script src="i18n.js"></script>
+<script src="api.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

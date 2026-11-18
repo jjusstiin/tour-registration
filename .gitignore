@@ -1,0 +1,18 @@
+# ⚠ Google 服務帳戶金鑰絕對不能上傳到 GitHub
+secrets/
+**/secrets/
+service-account*.json
+*-credentials.json
+*credentials*.json
+.env
+
+# Java / Maven
+backend/target/
+*.class
+
+# IDE
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
