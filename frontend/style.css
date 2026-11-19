@@ -125,6 +125,8 @@ footer{color:var(--muted);font-size:12.5px;text-align:center;margin-top:24px}
 .sub-h .hint{font-weight:400;margin:0}
 
 /* ===== 主辦方頁 ===== */
+header.hero + main{padding-top:22px}   /* 主辦方頁沒有分頁列，直接在頁首下方留出與報名頁相同的間距 */
+.actions + .tbl{margin-top:16px}       /* 按鈕列與名單表格之間 */
 .stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
 .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 16px;min-width:120px}
 .stat b{display:block;font-size:24px;font-family:"Noto Serif TC",serif;color:var(--primary)}

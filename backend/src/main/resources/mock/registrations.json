@@ -1,0 +1,70 @@
+[
+  {"nameZh":"王小明","nameEn":"WANG HSIAO MING","gender":"M","dob":"2001-03-15","phone":"0912-345-001","email":"xiaoming.wang@example.com","lineId":"xm_wang",
+   "region":"taichung","mentor":"李壇主","role":"youth","attendance":"full",
+   "sports":["volleyball"],"market":["join"],"otherHelp":["photo"],
+   "lodging":"need","arrivalDate":"2027-07-15","arrivalFlight":"06:30 BR315","departureDate":"2027-07-22","departureFlight":"23:55 BR316",
+   "emName":"王大同","emRel":"父親","emPhone":"0922-111-001","needs":"蛋奶素","consent":true},
+
+  {"nameZh":"陳怡君","nameEn":"CHEN YI CHUN","gender":"F","dob":"2003-07-02","phone":"0912-345-002","email":"yichun.chen@example.com","lineId":"yichun0702",
+   "region":"taichung","mentor":"李壇主","role":"youth","attendance":"full",
+   "sports":["othersport","help"],"market":["help"],"marketHelp":["food","culture"],"otherHelp":["translate"],
+   "lodging":"need","arrivalDate":"2027-07-15","arrivalFlight":"06:30 BR315","departureDate":"2027-07-22","departureFlight":"23:55 BR316",
+   "emName":"陳媽媽","emRel":"母親","emPhone":"0922-111-002","needs":"全素","consent":true},
+
+  {"nameZh":"林美玲","nameEn":"LIN EMILY","gender":"F","dob":"1999-11-20","phone":"0412 345 003","email":"emily.lin@example.com",
+   "region":"brisbane","mentor":"何點傳師","role":"staff","attendance":"local",
+   "sports":["help"],"market":["help"],"marketHelp":["reception","setup"],"otherHelp":["planning","checkin"],
+   "lodging":"self","emName":"林先生","emRel":"配偶","emPhone":"0412 999 003","needs":"蛋奶素","consent":true},
+
+  {"nameZh":"張家豪","nameEn":"CHANG CHIA HAO","gender":"M","dob":"2000-01-08","phone":"0412 345 004","email":"chiahao.chang@example.com","lineId":"jhchang",
+   "region":"brisbane","role":"youth","attendance":"local",
+   "sports":["volleyball"],"market":["join"],
+   "lodging":"self","emName":"張太太","emRel":"母親","emPhone":"0412 999 004","needs":"蛋奶素；花生過敏（嚴重，隨身攜帶 EpiPen）","consent":true},
+
+  {"nameZh":"黃詩涵","nameEn":"HUANG SHIH HAN","gender":"F","dob":"2002-05-30","phone":"0412 345 005","email":"shihhan.huang@example.com",
+   "region":"wa","mentor":"黃安敏","role":"youth","attendance":"partial","partialFrom":"15","partialTo":"19",
+   "sports":["volleyball","othersport"],"market":["join","help"],"marketHelp":["other"],"marketHelpOther":"手作 DIY 攤位",
+   "lodging":"need","arrivalDate":"2027-07-15","arrivalFlight":"14:10 QF583","departureDate":"2027-07-19","departureFlight":"18:00 QF584",
+   "emName":"黃爸爸","emRel":"父親","emPhone":"0412 999 005","needs":"蛋素","consent":true},
+
+  {"nameZh":"劉俊傑","nameEn":"LIU CHUN CHIEH","gender":"M","dob":"1998-09-12","phone":"0412 345 006","email":"chunchieh.liu@example.com",
+   "region":"sa","mentor":"洪鈺舜","role":"staff","attendance":"partial","partialFrom":"16","partialTo":"22",
+   "sports":["help"],"market":["help"],"marketHelp":["setup"],"otherHelp":["logistics","support"],
+   "lodging":"need","arrivalDate":"2027-07-16","arrivalFlight":"09:45 VA402","departureDate":"2027-07-22","departureFlight":"12:30 VA411",
+   "emName":"劉太太","emRel":"配偶","emPhone":"0412 999 006","needs":"全素","consent":true},
+
+  {"nameZh":"蔡佩珊","nameEn":"TSAI PEI SHAN","gender":"F","dob":"2004-02-14","phone":"0412 345 007","email":"peishan.tsai@example.com","lineId":"peishan214",
+   "region":"ca","mentor":"蔡采芹","role":"youth","attendance":"partial","partialFrom":"17","partialTo":"18",
+   "sports":["none"],"market":["join"],
+   "lodging":"need","arrivalDate":"2027-07-16","arrivalFlight":"20:15 JQ671","departureDate":"2027-07-19","departureFlight":"08:00 JQ670",
+   "emName":"蔡媽媽","emRel":"母親","emPhone":"0412 999 007","needs":"蛋素；堅果過敏","consent":true},
+
+  {"nameZh":"林志偉","nameEn":"LIN CHIH WEI","gender":"M","dob":"1975-06-01","phone":"0912-345-008","email":"chihwei.lin@example.com","lineId":"cwlin75",
+   "region":"taichung","mentor":"吳凱翔","role":"escort","attendance":"full",
+   "sports":["help"],"market":["none"],"otherHelp":["support"],
+   "lodging":"need","arrivalDate":"2027-07-15","arrivalFlight":"06:30 BR315","departureDate":"2027-07-22","departureFlight":"23:55 BR316",
+   "emName":"林太太","emRel":"配偶","emPhone":"0922-111-008","needs":"全素；高血壓，需定時服藥","consent":true},
+
+  {"nameZh":"吳雅婷","nameEn":"WU YA TING","gender":"F","dob":"2001-12-25","phone":"0412 345 009","email":"yating.wu@example.com",
+   "region":"nt","role":"youth","attendance":"partial","partialFrom":"15","partialTo":"20",
+   "sports":["othersport"],"market":["none"],"otherHelp":["other"],"otherHelpOther":"活動主持",
+   "lodging":"need","arrivalDate":"2027-07-15","arrivalFlight":"11:05 QF827","departureDate":"2027-07-20","departureFlight":"16:40 QF828",
+   "emName":"吳先生","emRel":"兄長","emPhone":"0412 999 009","needs":"蛋素","consent":true},
+
+  {"nameZh":"鄭宇翔","nameEn":"CHENG YU HSIANG","gender":"M","dob":"2003-08-08","phone":"0412 345 010","email":"yuhsiang.cheng@example.com","lineId":"yh_cheng",
+   "region":"other","regionOther":"雪梨","role":"youth","attendance":"partial","partialFrom":"16","partialTo":"19",
+   "sports":["volleyball"],"market":["join"],
+   "lodging":"self","arrivalDate":"2027-07-16","arrivalFlight":"07:50 QF500","departureDate":"2027-07-19","departureFlight":"19:30 QF537",
+   "emName":"鄭媽媽","emRel":"母親","emPhone":"0412 999 010","needs":"蛋奶素","consent":true},
+
+  {"nameZh":"許嘉玲","nameEn":"HSU CHIA LING","gender":"F","dob":"1996-04-04","phone":"0412 345 011","email":"chialing.hsu@example.com",
+   "region":"brisbane","mentor":"何琬宜","role":"other","roleOther":"家長志工","attendance":"local",
+   "sports":["none"],"market":["help"],"marketHelp":["food"],
+   "lodging":"self","emName":"許先生","emRel":"配偶","emPhone":"0412 999 011","needs":"全素","consent":true},
+
+  {"nameZh":"楊承恩","nameEn":"YANG CHENG EN","gender":"M","dob":"2005-10-10","phone":"0912-345-012","email":"chengen.yang@example.com","lineId":"ce_yang",
+   "region":"taichung","mentor":"林與諶","role":"youth","attendance":"full",
+   "sports":["volleyball","othersport"],"market":["join"],"otherHelp":["photo","translate"],
+   "lodging":"need","arrivalDate":"2027-07-15","arrivalFlight":"06:30 BR315","departureDate":"2027-07-22","departureFlight":"23:55 BR316",
+   "emName":"楊爸爸","emRel":"父親","emPhone":"0922-111-012","needs":"蛋素；乳糖不耐","consent":true}
+]

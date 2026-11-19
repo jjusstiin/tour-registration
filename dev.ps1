@@ -1,7 +1,7 @@
 ﻿# 本機預覽：一鍵啟動後端 + 前端，並打開瀏覽器
 #
 # 用法（在 VS Code 終端機，專案根目錄）：
-#   .\dev.ps1           → 資料存記憶體（安全，關掉就清空，不會寫進 Google 試算表）
+#   .\dev.ps1           → 資料存記憶體，並預先載入 12 筆假資料（安全，關掉就清空，不會寫進 Google 試算表）
 #   .\dev.ps1 -Sheet    → 連真的 Google 試算表（需要 backend\secrets\ 裡有金鑰）
 #
 # 要停止：關掉跳出來的兩個視窗即可。
@@ -17,7 +17,8 @@ if ($Sheet) {
     $backendEnv += "`$env:SHEET_ID='$sheetId'; `$env:GOOGLE_CREDENTIALS_FILE='$($key.FullName)';"
     Write-Host "⚠ 連到真的試算表：測試資料記得刪掉" -ForegroundColor Yellow
 } else {
-    Write-Host "資料存在記憶體，不會寫進試算表" -ForegroundColor Green
+    $backendEnv += "`$env:MOCK_DATA='true';"
+    Write-Host "資料存在記憶體（含 12 筆假資料），不會寫進試算表" -ForegroundColor Green
 }
 
 # 後端（port 8080）
