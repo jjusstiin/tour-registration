@@ -2,7 +2,7 @@
 #
 # 用法（在 VS Code 終端機，專案根目錄）：
 #   .\dev.ps1           → 資料存記憶體，並預先載入 12 筆假資料（安全，關掉就清空，不會寫進 Google 試算表）
-#   .\dev.ps1 -Sheet    → 連真的 Google 試算表（需要 backend\secrets\ 裡有金鑰）
+#   .\dev.ps1 -Sheet    → 連真的 Google 試算表（需要 backend\secrets\ 裡有金鑰；SHEET_ID 第一次輸入後會記住）
 #
 # 要停止：關掉跳出來的兩個視窗即可。
 param([switch]$Sheet)
@@ -13,7 +13,15 @@ $backendEnv = "`$env:ADMIN_TOKEN='local-admin';"
 if ($Sheet) {
     $key = Get-ChildItem "$root\backend\secrets\*.json" -ErrorAction SilentlyContinue | Select-Object -First 1
     if (-not $key) { Write-Host "找不到金鑰：請把 Google 服務帳戶 JSON 放進 backend\secrets\" -ForegroundColor Red; exit 1 }
-    $sheetId = Read-Host "請輸入 SHEET_ID（試算表網址 /d/ 後面那串）"
+    # SHEET_ID 記在 backend\secrets\sheet-id.txt（不會上傳）；第一次沒有就問一次並存起來
+    $idFile = "$root\backend\secrets\sheet-id.txt"
+    if (Test-Path $idFile) {
+        $sheetId = (Get-Content $idFile -Raw).Trim()
+    } else {
+        $sheetId = (Read-Host "請輸入 SHEET_ID（試算表網址 /d/ 後面那串）").Trim()
+        Set-Content -Path $idFile -Value $sheetId -Encoding ascii
+        Write-Host "已記住 SHEET_ID（$idFile），下次不用再輸入" -ForegroundColor Green
+    }
     $backendEnv += "`$env:SHEET_ID='$sheetId'; `$env:GOOGLE_CREDENTIALS_FILE='$($key.FullName)';"
     Write-Host "⚠ 連到真的試算表：測試資料記得刪掉" -ForegroundColor Yellow
 } else {
