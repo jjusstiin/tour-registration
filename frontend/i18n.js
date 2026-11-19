@@ -11,6 +11,8 @@ window.T = {
   tab_brochure: { zh: "活動簡章", en: "Program" },
   tab_register: { zh: "線上報名", en: "Register" },
 
+  deadline_label: { zh: "報名截止", en: "Registration closes" },
+  deadline_date: { zh: "2026年12月30日（三）", en: "Wednesday 30 December 2026" },
   cta_title: { zh: "準備好了嗎？", en: "Ready to join?" },
   cta_hint: { zh: "報名完成不代表正式錄取，錄取結果及後續活動資訊將另行通知。", en: "Submitting the form does not guarantee a place. Results and further details will be sent separately." },
   cta_btn: { zh: "立即線上報名 →", en: "Register online →" },
@@ -90,5 +92,8 @@ window.T = {
   m_fail: { zh: "送出失敗，請檢查網路後再試一次。", en: "Could not submit. Please check your connection and try again." },
   m_gone: { zh: "找不到您先前的報名紀錄，請再按一次送出，將建立新的報名。", en: "Your previous registration couldn't be found. Submit again to create a new one." },
 
+  admin_label: { zh: "網站管理人（臺灣）：", en: "Site administrator (Taiwan):" },
+  admin_name: { zh: "林與諶 Justin Lin", en: "Justin Lin 林與諶" },
+  admin_phone: { zh: "0988-393-120", en: "+886 988 393 120" },
   footer: { zh: "個人資料僅供本活動聯繫、安排與安全管理使用，並妥善保管。", en: "Your personal data is used only for communication, arrangements and safety for this event, and is kept securely." }
 };

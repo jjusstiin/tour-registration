@@ -23,3 +23,7 @@ Thumbs.db
 
 # 背景原圖（1.9MB）不上傳；網站用壓縮過的 hero.jpg / hero-sm.jpg
 frontend/台北雪梨雙城晨曦之旅.png
+
+# Python
+__pycache__/
+*.pyc

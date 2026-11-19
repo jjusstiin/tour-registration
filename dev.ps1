@@ -27,7 +27,7 @@ Start-Process powershell -ArgumentList '-NoExit', '-Command',
 
 # 前端（port 5500）
 Start-Process powershell -ArgumentList '-NoExit', '-Command',
-    "`$host.UI.RawUI.WindowTitle='前端 :5500'; jwebserver -d '$root\frontend' -p 5500"
+    "`$host.UI.RawUI.WindowTitle='前端 :5500'; python -I '$root\tools\devserver.py' '$root\frontend' 5500"
 
 Write-Host "後端啟動約需 20 秒…"
 Start-Sleep -Seconds 4
